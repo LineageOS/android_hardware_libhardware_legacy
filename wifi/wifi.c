@@ -65,7 +65,12 @@ static char iface[PROPERTY_VALUE_MAX];
 
 #define WIFI_DRIVER_LOADER_DELAY	1000000
 
-static const char IFACE_DIR[]           = "/data/system/wpa_supplicant";
+#ifdef TARGET_IS_GALAXYS
+    static const char IFACE_DIR[]           = "/data/misc/wifi";
+#else
+    static const char IFACE_DIR[]           = "/data/system/wpa_supplicant";
+#endif
+
 static const char DRIVER_MODULE_NAME[]  = WIFI_DRIVER_MODULE_NAME;
 static const char DRIVER_MODULE_TAG[]   = WIFI_DRIVER_MODULE_NAME " ";
 static const char DRIVER_MODULE_PATH[]  = WIFI_DRIVER_MODULE_PATH;
@@ -75,7 +80,13 @@ static const char DRIVER_PROP_NAME[]    = "wlan.driver.status";
 static const char SUPPLICANT_NAME[]     = "wpa_supplicant";
 static const char SUPP_PROP_NAME[]      = "init.svc.wpa_supplicant";
 static const char SUPP_CONFIG_TEMPLATE[]= "/system/etc/wifi/wpa_supplicant.conf";
-static const char SUPP_CONFIG_FILE[]    = "/data/misc/wifi/wpa_supplicant.conf";
+
+#ifdef TARGET_IS_GALAXYS
+    static const char SUPP_CONFIG_FILE[]    = "/data/wifi/bcm_supp.conf";
+#else
+    static const char SUPP_CONFIG_FILE[]    = "/data/misc/wifi/wpa_supplicant.conf";
+#endif
+
 static const char MODULE_FILE[]         = "/proc/modules";
 
 #ifdef WIFI_EXT_MODULE_NAME
