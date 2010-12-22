@@ -39,6 +39,7 @@ static struct wpa_ctrl *monitor_conn;
 extern int do_dhcp();
 extern int ifc_init();
 extern void ifc_close();
+extern int ifc_up(const char *name);
 extern char *dhcp_lasterror();
 extern void get_dhcp_info();
 extern int init_module(void *, unsigned long, const char *);
@@ -77,11 +78,126 @@ static const char SUPP_CONFIG_TEMPLATE[]= "/system/etc/wifi/wpa_supplicant.conf"
 static const char SUPP_CONFIG_FILE[]    = "/data/misc/wifi/wpa_supplicant.conf";
 static const char MODULE_FILE[]         = "/proc/modules";
 
+#ifdef WIFI_EXT_MODULE_NAME
+static const char EXT_MODULE_NAME[] = WIFI_EXT_MODULE_NAME;
+#ifdef WIFI_EXT_MODULE_ARG
+static const char EXT_MODULE_ARG[] = WIFI_EXT_MODULE_ARG;
+#else
+static const char EXT_MODULE_ARG[] = "";
+#endif
+#endif
+#ifdef WIFI_EXT_MODULE_PATH
+static const char EXT_MODULE_PATH[] = WIFI_EXT_MODULE_PATH;
+#endif
+
+/* rfkill support borrowed from bluetooth */
+static int rfkill_id = -1;
+static char *rfkill_state_path = NULL;
+
+
+static int init_rfkill() {
+    char path[64];
+    char buf[16];
+    int fd;
+    int sz;
+    int id;
+    for (id = 0; ; id++) {
+        snprintf(path, sizeof(path), "/sys/class/rfkill/rfkill%d/type", id);
+        fd = open(path, O_RDONLY);
+        if (fd < 0) {
+            LOGW("open(%s) failed: %s (%d)\n", path, strerror(errno), errno);
+            return -1;
+        }
+        sz = read(fd, &buf, sizeof(buf));
+        close(fd);
+        if (sz >= 4 && memcmp(buf, "wlan", 4) == 0) {
+            rfkill_id = id;
+            break;
+        }
+    }
+
+    asprintf(&rfkill_state_path, "/sys/class/rfkill/rfkill%d/state", rfkill_id);
+    return 0;
+}
+
+static int check_wifi_power() {
+    int sz;
+    int fd = -1;
+    int ret = -1;
+    char buffer;
+
+    if (rfkill_id == -1) {
+        if (init_rfkill()) goto out;
+    }
+
+    fd = open(rfkill_state_path, O_RDONLY);
+    if (fd < 0) {
+        LOGE("open(%s) failed: %s (%d)", rfkill_state_path, strerror(errno),
+                errno);
+        goto out;
+    }
+    sz = read(fd, &buffer, 1);
+    if (sz != 1) {
+        LOGE("read(%s) failed: %s (%d)", rfkill_state_path, strerror(errno),
+                errno);
+        goto out;
+    }
+
+    switch (buffer) {
+        case '1':
+            ret = 1;
+            break;
+        case '0':
+            ret = 0;
+            break;
+    }
+
+out:
+    if (fd >= 0) close(fd);
+    return ret;
+}
+
+static int set_wifi_power(int on) {
+    int sz;
+    int fd = -1;
+    int ret = -1;
+    const char buffer = (on ? '1' : '0');
+
+    if (rfkill_id == -1) {
+        if (init_rfkill()) goto out;
+    }
+
+    fd = open(rfkill_state_path, O_WRONLY);
+    if (fd < 0) {
+        LOGE("open(%s) for write failed: %s (%d)", rfkill_state_path,
+                strerror(errno), errno);
+        goto out;
+    }
+    sz = write(fd, &buffer, 1);
+    if (sz < 0) {
+        LOGE("write(%s) failed: %s (%d)", rfkill_state_path, strerror(errno),
+                errno);
+        goto out;
+    }
+    ret = 0;
+
+out:
+    if (fd >= 0) close(fd);
+    return ret;
+}
+
+/* end rfkill support */
+
 static int insmod(const char *filename, const char *args)
 {
     void *module;
     unsigned int size;
     int ret;
+
+    /* Use rfkill if "module" is 'rfkill' */
+    if (!strncmp(DRIVER_MODULE_PATH, "rfkill", 6)) {
+        return set_wifi_power(1);
+    }
 
     module = load_file(filename, &size);
     if (!module)
@@ -99,8 +215,13 @@ static int rmmod(const char *modname)
     int ret = -1;
     int maxtry = 10;
 
+    /* Use rfkill if "module" is 'rfkill' */
+    if (!strncmp(DRIVER_MODULE_PATH, "rfkill", 6)) {
+        return set_wifi_power(0);
+    }
+
     while (maxtry-- > 0) {
-        ret = delete_module(modname, O_NONBLOCK | O_EXCL);
+        ret = delete_module(modname, O_NONBLOCK | O_EXCL | O_TRUNC);
         if (ret < 0 && errno == EAGAIN)
             usleep(500000);
         else
@@ -136,6 +257,12 @@ const char *get_dhcp_error_string() {
 }
 
 static int check_driver_loaded() {
+
+    /* Use rfkill if "module" is 'rfkill' */
+    if (!strncmp(DRIVER_MODULE_PATH, "rfkill", 6)) {
+        return check_wifi_power();
+    }
+
     char driver_status[PROPERTY_VALUE_MAX];
     FILE *proc;
     char line[sizeof(DRIVER_MODULE_TAG)+10];
@@ -175,6 +302,12 @@ int wifi_load_driver()
         return 0;
     }
 
+#ifdef WIFI_EXT_MODULE_PATH
+    if (insmod(EXT_MODULE_PATH, EXT_MODULE_ARG) < 0)
+        return -1;
+    usleep(200000);
+#endif
+
     if (insmod(DRIVER_MODULE_PATH, DRIVER_MODULE_ARG) < 0)
         return -1;
 
@@ -207,15 +340,20 @@ int wifi_unload_driver()
     int count = 20; /* wait at most 10 seconds for completion */
 
     if (rmmod(DRIVER_MODULE_NAME) == 0) {
-	while (count-- > 0) {
-	    if (!check_driver_loaded())
-		break;
-    	    usleep(500000);
-	}
-	if (count) {
-    	    return 0;
-	}
-	return -1;
+        while (count-- > 0) {
+            if (!check_driver_loaded())
+                break;
+            usleep(500000);
+        }
+        if (count) {
+#ifdef WIFI_EXT_MODULE_NAME
+            if (rmmod(EXT_MODULE_NAME) == 0)
+                return 0;
+#else
+            return 0;
+#endif
+        }
+        return -1;
     } else
         return -1;
 }
@@ -306,6 +444,13 @@ int wifi_start_supplicant()
         serial = pi->serial;
     }
 #endif
+    /* The ar6k driver needs the interface up in order to scan! */
+    if (!strncmp(DRIVER_MODULE_NAME, "ar6000", 6)) {
+        ifc_init();
+        ifc_up("wlan0");
+        sleep(1);
+    }
+
     property_set("ctl.start", SUPPLICANT_NAME);
     sched_yield();
 
@@ -428,7 +573,7 @@ int wifi_wait_for_event(char *buf, size_t buflen)
     int result;
     struct timeval tval;
     struct timeval *tptr;
-    
+
     if (monitor_conn == NULL) {
         LOGD("Connection closed\n");
         strncpy(buf, WPA_EVENT_TERMINATING " - connection closed", buflen-1);
@@ -456,7 +601,7 @@ int wifi_wait_for_event(char *buf, size_t buflen)
     /*
      * Events strings are in the format
      *
-     *     <N>CTRL-EVENT-XXX 
+     *     <N>CTRL-EVENT-XXX
      *
      * where N is the message level in numerical form (0=VERBOSE, 1=DEBUG,
      * etc.) and XXX is the event name. The level information is not useful
