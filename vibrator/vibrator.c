@@ -26,7 +26,9 @@
 extern int sendit(int timeout_ms);
 #else
 
+#ifndef THE_DEVICE
 #define THE_DEVICE "/sys/class/timed_output/vibrator/enable"
+#endif
 
 static int sendit(int timeout_ms)
 {
