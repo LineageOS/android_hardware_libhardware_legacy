@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAJ3///o8\u003d",
+        "filename": "wifi/wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 320
+      },
+      "writtenOn": "2011-10-12T01:59:15Z",
+      "side": 1,
+      "message": "Remove the commented line.",
+      "revId": "1a40f081836da4660cd012bf4cc0c7eb70dcaa2c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAJ3///pA\u003d",
+        "filename": "wifi/wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 320
+      },
+      "writtenOn": "2011-10-12T01:59:15Z",
+      "side": 1,
+      "message": "Remove the commented line.",
+      "revId": "1a40f081836da4660cd012bf4cc0c7eb70dcaa2c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAJ3///pE\u003d",
+        "filename": "wifi/wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 320
+      },
+      "writtenOn": "2011-10-12T01:59:15Z",
+      "side": 1,
+      "message": "spaces?",
+      "revId": "1a40f081836da4660cd012bf4cc0c7eb70dcaa2c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAJ3///pI\u003d",
+        "filename": "wifi/wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 320
+      },
+      "writtenOn": "2011-10-12T01:59:15Z",
+      "side": 1,
+      "message": "This piece of code should not be needed. It will be stopped by wifi_unload_driver() (and nothing uses the end: goto).",
+      "revId": "1a40f081836da4660cd012bf4cc0c7eb70dcaa2c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
