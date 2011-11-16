@@ -355,6 +355,9 @@ protected:
         virtual float computeVolume(int stream, int index, audio_io_handle_t output, audio_devices_t device);
 
         // check that volume change is permitted, compute and send new volume to audio hardware
+#ifdef QCOM_TUNNEL_LPA_ENABLED
+        virtual
+#endif
         status_t checkAndSetVolume(int stream, int index, audio_io_handle_t output, audio_devices_t device, int delayMs = 0, bool force = false);
 
         // apply all stream volumes to the specified output and device
@@ -368,6 +371,9 @@ protected:
                              audio_devices_t device = (audio_devices_t)0);
 
         // Mute or unmute the stream on the specified output
+#ifdef QCOM_TUNNEL_LPA_ENABLED
+        virtual
+#endif
         void setStreamMute(int stream,
                            bool on,
                            audio_io_handle_t output,
