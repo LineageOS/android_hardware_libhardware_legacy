@@ -211,6 +211,11 @@ public:
     /** set the audio volume of a voice call. Range is between 0.0 and 1.0 */
     virtual status_t    setVoiceVolume(float volume) = 0;
 
+#ifdef QCOM_FM_ENABLED
+    /** set the fm volume. Range is between 0.0 and 1.0 */
+    virtual status_t    setFmVolume(float volume) { return 0; }
+#endif
+
     /**
      * set the audio volume for all audio activities other than voice call.
      * Range between 0.0 and 1.0. If any value other than NO_ERROR is returned,
@@ -252,6 +257,21 @@ public:
                                 uint32_t *channels=0,
                                 uint32_t *sampleRate=0,
                                 status_t *status=0) = 0;
+#ifdef QCOM_TUNNEL_LPA_ENABLED
+    /** This method creates and opens the audio hardware output
+     *  session for control path */
+    virtual AudioStreamOut* openOutputSession(
+                                uint32_t devices,
+                                int *format,
+                                status_t *status,
+                                int sessionId=-1
+#ifndef QCOM_ICS_LPA_COMPAT
+                                ,
+                                uint32_t sampleRate=0,
+                                uint32_t channels=0
+#endif
+                               ) {return 0;};
+#endif
     virtual    void        closeOutputStream(AudioStreamOut* out) = 0;
 
     /** This method creates and opens the audio hardware input stream */
