@@ -59,12 +59,24 @@ static char iface[PROPERTY_VALUE_MAX];
 #define WIFI_DRIVER_MODULE_ARG          ""
 #endif
 #ifndef WIFI_FIRMWARE_LOADER
-#define WIFI_FIRMWARE_LOADER		""
+#define WIFI_FIRMWARE_LOADER            ""
 #endif
 #ifndef WIFI_PRE_LOADER
-#define WIFI_PRE_LOADER		""
+#define WIFI_PRE_LOADER                 ""
 #endif
-#define WIFI_TEST_INTERFACE		"sta"
+#ifndef WIFI_AP_DRIVER_MODULE_NAME
+#define WIFI_AP_DRIVER_MODULE_NAME      "tiap_drv"
+#endif
+#ifndef WIFI_AP_DRIVER_MODULE_PATH
+#define WIFI_AP_DRIVER_MODULE_PATH      "/system/lib/modules/tiap_drv.ko"
+#endif
+#ifndef WIFI_AP_DRIVER_MODULE_ARG
+#define WIFI_AP_DRIVER_MODULE_ARG       ""
+#endif
+#ifndef WIFI_AP_FIRMWARE_LOADER
+#define WIFI_AP_FIRMWARE_LOADER         "wlan_ap_loader"
+#endif
+#define WIFI_TEST_INTERFACE             "sta"
 
 #define WIFI_DRIVER_LOADER_DELAY	1000000
 
@@ -82,11 +94,11 @@ static const char SUPP_CONFIG_FILE[]    = "/data/misc/wifi/wpa_supplicant.conf";
 static const char MODULE_FILE[]         = "/proc/modules";
 static const char PRELOADER[]           = WIFI_PRE_LOADER;
 
-static const char AP_DRIVER_MODULE_NAME[]  = "tiap_drv";
-static const char AP_DRIVER_MODULE_TAG[]   = "tiap_drv" " ";
-static const char AP_DRIVER_MODULE_PATH[]  = "/system/lib/modules/tiap_drv.ko";
-static const char AP_DRIVER_MODULE_ARG[]   = "";
-static const char AP_FIRMWARE_LOADER[]     = "wlan_ap_loader";
+static const char AP_DRIVER_MODULE_NAME[]  = WIFI_AP_DRIVER_MODULE_NAME;
+static const char AP_DRIVER_MODULE_TAG[]   = WIFI_AP_DRIVER_MODULE_NAME " ";
+static const char AP_DRIVER_MODULE_PATH[]  = WIFI_AP_DRIVER_MODULE_PATH;
+static const char AP_DRIVER_MODULE_ARG[]   = WIFI_AP_DRIVER_MODULE_ARG;
+static const char AP_FIRMWARE_LOADER[]     = WIFI_AP_FIRMWARE_LOADER;
 static const char AP_DRIVER_PROP_NAME[]    = "wlan.ap.driver.status";
 
 #ifdef WIFI_EXT_MODULE_NAME
@@ -312,6 +324,8 @@ int hotspot_load_driver()
     char driver_status[PROPERTY_VALUE_MAX];
     int count = 100; /* wait at most 20 seconds for completion */
 
+    LOGW("hotspot_load_driver");
+
     if (check_hotspot_driver_loaded()) {
         return 0;
     }
@@ -327,6 +341,7 @@ int hotspot_load_driver()
     usleep(200000);
 #endif
 
+    LOGW("Inserting module %s %s\n", AP_DRIVER_MODULE_PATH, AP_DRIVER_MODULE_ARG);
     if (insmod(AP_DRIVER_MODULE_PATH, AP_DRIVER_MODULE_ARG) < 0){
 #ifdef WIFI_EXT_MODULE_NAME
         rmmod(EXT_MODULE_NAME);
@@ -426,6 +441,7 @@ int wifi_load_driver()
     char driver_status[PROPERTY_VALUE_MAX];
     int count = 100; /* wait at most 20 seconds for completion */
 
+    LOGW("wifi_load_driver");
     if (check_driver_loaded()) {
         return 0;
     }
