@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "AAAANX///l0\u003d",
+        "filename": "wifi/wifi.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1063
+      },
+      "writtenOn": "2011-12-06T04:17:05Z",
+      "side": 1,
+      "message": "Probably because tiap is the most commonly used AP driver. Legend and espresso are not sufficient, jordan and various SEMC devices are using it too.",
+      "parentUuid": "AAAANX///mE\u003d",
+      "revId": "1cbca087ac1c2805b6fccc948110bedb9dc087bd",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAANX///mk\u003d",
         "filename": "wifi/wifi.c",
         "patchSetId": 1
