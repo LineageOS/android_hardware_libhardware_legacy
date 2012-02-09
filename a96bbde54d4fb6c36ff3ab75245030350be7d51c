@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAQX///rE\u003d",
+        "filename": "wifi/wifi.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1039
+      },
+      "writtenOn": "2012-02-09T06:02:54Z",
+      "side": 1,
+      "message": "WIFI_AP_DRIVER_MODULE_ARG default value is required...\n\nerror: \u0027WIFI_AP_DRIVER_MODULE_ARG\u0027 undeclared here (not in a function)",
+      "revId": "a96bbde54d4fb6c36ff3ab75245030350be7d51c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
