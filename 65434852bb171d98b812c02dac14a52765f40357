@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAQX//+pI\u003d",
+        "filename": "wifi/wifi.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1039
+      },
+      "writtenOn": "2012-02-18T17:14:40Z",
+      "side": 1,
+      "message": "should be wifi_unload_hotspot_driver() ....",
+      "revId": "65434852bb171d98b812c02dac14a52765f40357",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
