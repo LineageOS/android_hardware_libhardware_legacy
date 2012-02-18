@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAQX//+pQ\u003d",
+        "filename": "wifi/wifi.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1039
+      },
+      "writtenOn": "2012-02-18T16:59:32Z",
+      "side": 1,
+      "message": "tiap_loader report the status in wlan.ap.driver.status, unlike wlan_loader...",
+      "revId": "b73f4263bf277d6fa3ea2a59a87a4d7e104542d5",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
