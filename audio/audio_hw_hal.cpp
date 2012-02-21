@@ -371,6 +371,13 @@ static int adev_get_mic_mute(const struct audio_hw_device *dev, bool *state)
 static int adev_set_parameters(struct audio_hw_device *dev, const char *kvpairs)
 {
     struct legacy_audio_device *ladev = to_ladev(dev);
+#ifdef NO_SCREEN_STATE_KEY_SUPPORT
+    LOGV("%s:%d %s", __func__, __LINE__, kvpairs);
+    // ignore screen_state=off/on new keys
+    if (strncmp(kvpairs, "screen_state=", 13) == 0 && strlen(kvpairs) < 20) {
+        return 0;
+    }
+#endif
     return ladev->hwif->setParameters(String8(kvpairs));
 }
 
