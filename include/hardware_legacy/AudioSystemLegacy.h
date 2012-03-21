@@ -139,6 +139,8 @@ public:
         HE_AAC_V1           = 0x05000000,
         HE_AAC_V2           = 0x06000000,
         VORBIS              = 0x07000000,
+        EVRC                = 0x08000000,
+        QCELP               = 0x09000000,
         MAIN_FORMAT_MASK    = 0xFF000000,
         SUB_FORMAT_MASK     = 0x00FFFFFF,
         // Aliases
@@ -253,6 +255,7 @@ public:
         DEVICE_OUT_ANC_HEADPHONE = 0x8000,
         DEVICE_OUT_FM_TX = 0x10000,
         DEVICE_OUT_DIRECTOUTPUT = 0x20000,
+        DEVICE_OUT_PROXY = 0x40000,
         DEVICE_OUT_DEFAULT = 0x80000,
 #else
         DEVICE_OUT_DEFAULT = 0x8000,
@@ -266,7 +269,7 @@ public:
                 DEVICE_OUT_ANC_HEADSET | DEVICE_OUT_ANC_HEADPHONE |
                 DEVICE_OUT_FM | DEVICE_OUT_FM_TX |
 #endif
-                DEVICE_OUT_DEFAULT),
+                DEVICE_OUT_PROXY | DEVICE_OUT_DEFAULT),
         DEVICE_OUT_ALL_A2DP = (DEVICE_OUT_BLUETOOTH_A2DP | DEVICE_OUT_BLUETOOTH_A2DP_HEADPHONES |
                 DEVICE_OUT_BLUETOOTH_A2DP_SPEAKER),
 
