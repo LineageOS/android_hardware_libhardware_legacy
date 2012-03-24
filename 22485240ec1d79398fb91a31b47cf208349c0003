@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAARX//+QY\u003d",
+        "filename": "include/hardware_legacy/AudioSystemLegacy.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 444
+      },
+      "writtenOn": "2012-03-24T06:12:59Z",
+      "side": 1,
+      "message": "I guess the correct ifdef should be\n\n#ifdef WITH_QCOM_SPEECH\n\nas that\u0027s what\u0027s used elsewhere for the EVRC/QCELP stuff.",
+      "revId": "22485240ec1d79398fb91a31b47cf208349c0003",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
