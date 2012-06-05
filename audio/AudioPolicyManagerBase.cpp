@@ -2300,11 +2300,26 @@ bool AudioPolicyManagerBase::needsDirectOuput(AudioSystem::stream_type stream,
                                     uint32_t device)
 {
 #if defined(QCOM_HARDWARE) && !defined(USES_AUDIO_LEGACY)
-   LOGV("AudioPolicyManagerBase::needsDirectOuput stream = %d mPhoneState = %d \n", stream, mPhoneState);
-   return ((flags & AudioSystem::OUTPUT_FLAG_DIRECT) ||
+   bool directOutput_flag = false;
+
+   LOGV("AudioPolicyManagerBase::needsDirectOuput stream = %d mPhoneState = %d \n",
+        stream, mPhoneState);
+
+   for (size_t i = 0; i < mOutputs.size(); i++) {
+       if (mOutputs.valueAt(i)->mFlags & AudioSystem::OUTPUT_FLAG_DIRECT) {
+           directOutput_flag = true;
+           LOGV("AudioPolicyManagerBase::needsDirectOuput i = %d mFlags = %x",
+                i, mOutputs.valueAt(i)->mFlags);
+       }
+   }
+
+   return ((!directOutput_flag) &&
+          (flags & AudioSystem::OUTPUT_FLAG_DIRECT) ||
           (format !=0 && !AudioSystem::isLinearPCM(format)) ||
-          ((stream == AudioSystem::VOICE_CALL) && (channels == AudioSystem::CHANNEL_OUT_MONO)
-          && ((samplingRate == 8000 )||(samplingRate == 16000 )) && (mPhoneState == AudioSystem::MODE_IN_COMMUNICATION)));
+          ((stream == AudioSystem::VOICE_CALL)
+          && (channels == AudioSystem::CHANNEL_OUT_MONO)
+          && ((samplingRate == 8000 )||(samplingRate == 16000 ))
+          && (mPhoneState == AudioSystem::MODE_IN_COMMUNICATION)));
 #else
    return ((flags & AudioSystem::OUTPUT_FLAG_DIRECT) ||
           (format !=0 && !AudioSystem::isLinearPCM(format)));
