@@ -61,6 +61,16 @@ const char * const NEW_PATHS[] = {
 
 const char * const AUTO_OFF_TIMEOUT_DEV = "/sys/android_power/auto_off_timeout";
 
+#ifdef USE_DVFS_STUB
+void acquire_dvfs_lock()
+{
+}
+
+void release_dvfs_lock()
+{
+}
+#endif
+
 //XXX static pthread_once_t g_initialized = THREAD_ONCE_INIT;
 static int g_initialized = 0;
 static int g_fds[OUR_FD_COUNT];
