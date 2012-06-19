@@ -1545,9 +1545,9 @@ void AudioPolicyManagerBase::checkA2dpSuspend()
 {
     // suspend A2DP output if:
     //      (NOT already suspended) &&
-    //      ((SCO device is connected &&
-    //       (forced usage for communication || for record is SCO))) ||
-    //      (phone state is ringing || in call)
+    //      ((SCO device is connected) &&
+    //       ((forced usage for communication || for record is SCO) ||
+    //       (phone state is ringing || in call)))
     //
     // restore A2DP output if:
     //      (Already suspended) &&
@@ -1570,10 +1570,10 @@ void AudioPolicyManagerBase::checkA2dpSuspend()
             mA2dpSuspended = false;
         }
     } else {
-        if (((mScoDeviceAddress != "") &&
+        if ((mScoDeviceAddress != "") &&
              ((mForceUse[AudioSystem::FOR_COMMUNICATION] == AudioSystem::FORCE_BT_SCO) ||
-              (mForceUse[AudioSystem::FOR_RECORD] == AudioSystem::FORCE_BT_SCO))) ||
-             ((mPhoneState == AudioSystem::MODE_IN_CALL) ||
+              (mForceUse[AudioSystem::FOR_RECORD] == AudioSystem::FORCE_BT_SCO) ||
+              (mPhoneState == AudioSystem::MODE_IN_CALL) ||
               (mPhoneState == AudioSystem::MODE_RINGTONE))) {
 
             mpClientInterface->suspendOutput(mA2dpOutput);
