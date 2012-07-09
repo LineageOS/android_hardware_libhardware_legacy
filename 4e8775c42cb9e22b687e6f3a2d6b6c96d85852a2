@@ -1,0 +1,9 @@
+Change-Id: I26414abec0e82b0a6e2c22c14b8b16ffada2c2ec
+Code-Review+2: Steve Kondik <shade@chemlab.org>
+Verified+1: Steve Kondik <shade@chemlab.org>
+Code-Review+1: Pál Zoltán Illés <illespal@gmail.com>
+Submitted-by: Steve Kondik <shade@chemlab.org>
+Submitted-at: Mon, 09 Jul 2012 09:52:53 +0400
+Reviewed-on: http://review.cyanogenmod.com/18151
+Project: CyanogenMod/android_hardware_libhardware_legacy
+Branch: refs/heads/ics
