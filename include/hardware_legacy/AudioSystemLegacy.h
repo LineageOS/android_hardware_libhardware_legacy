@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
+ * Copyright (c) 2012, Code Aurora Forum. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -235,11 +236,27 @@ public:
         CHANNEL_IN_Z_AXIS = 0x2000,
         CHANNEL_IN_VOICE_UPLINK = 0x4000,
         CHANNEL_IN_VOICE_DNLINK = 0x8000,
+#ifdef QCOM_HARDWARE
+        CHANNEL_IN_FRONT_LEFT  = 0x10000,
+        CHANNEL_IN_FRONT_RIGHT = 0x20000,
+        CHANNEL_IN_FRONT_CENTER = 0x40000,
+        CHANNEL_IN_LOW_FREQUENCY = 0x80000,
+        CHANNEL_IN_BACK_LEFT = 0x100000,
+        CHANNEL_IN_BACK_RIGHT = 0x200000,
+#endif
         CHANNEL_IN_MONO = CHANNEL_IN_FRONT,
         CHANNEL_IN_STEREO = (CHANNEL_IN_LEFT | CHANNEL_IN_RIGHT),
+#ifdef QCOM_HARDWARE
+        CHANNEL_IN_5POINT1 = (CHANNEL_IN_FRONT_LEFT | CHANNEL_IN_FRONT_RIGHT |
+                CHANNEL_IN_FRONT_CENTER | CHANNEL_IN_LOW_FREQUENCY |
+                CHANNEL_IN_BACK_LEFT | CHANNEL_IN_BACK_RIGHT),
+#endif
         CHANNEL_IN_ALL = (CHANNEL_IN_LEFT | CHANNEL_IN_RIGHT | CHANNEL_IN_FRONT | CHANNEL_IN_BACK|
                 CHANNEL_IN_LEFT_PROCESSED | CHANNEL_IN_RIGHT_PROCESSED | CHANNEL_IN_FRONT_PROCESSED | CHANNEL_IN_BACK_PROCESSED|
                 CHANNEL_IN_PRESSURE | CHANNEL_IN_X_AXIS | CHANNEL_IN_Y_AXIS | CHANNEL_IN_Z_AXIS |
+#ifdef QCOM_HARDWARE
+                CHANNEL_IN_5POINT1 |
+#endif
                 CHANNEL_IN_VOICE_UPLINK | CHANNEL_IN_VOICE_DNLINK)
     };
 

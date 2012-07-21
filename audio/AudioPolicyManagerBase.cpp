@@ -3406,6 +3406,9 @@ const struct StringToEnum sOutChannelsNameToEnumTable[] = {
 const struct StringToEnum sInChannelsNameToEnumTable[] = {
     STRING_TO_ENUM(AUDIO_CHANNEL_IN_MONO),
     STRING_TO_ENUM(AUDIO_CHANNEL_IN_STEREO),
+#ifdef QCOM_HARDWARE
+    STRING_TO_ENUM(AUDIO_CHANNEL_IN_5POINT1),
+#endif
 };
 
 
