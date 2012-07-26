@@ -93,7 +93,7 @@ public:
                                         uint32_t format = AudioSystem::FORMAT_DEFAULT,
                                         uint32_t channels = 0,
                                         AudioSystem::output_flags flags = AudioSystem::OUTPUT_FLAG_INDIRECT) = 0;
-#ifdef WITH_QCOM_LPA
+#ifdef QCOM_TUNNEL_LPA_ENABLED
     // request a session appriate for tunnel mode/batch decoding session of the supplied stream type and parameters
     virtual audio_io_handle_t getSession(AudioSystem::stream_type stream,
                                         uint32_t format = AudioSystem::FORMAT_DEFAULT,
@@ -204,7 +204,7 @@ public:
                                          audio_channel_mask_t *pChannelMask,
                                          uint32_t *pLatencyMs,
                                          audio_output_flags_t flags) = 0;
-#ifdef WITH_QCOM_LPA
+#ifdef QCOM_TUNNEL_LPA_ENABLED
     // opens an audio session with the requested parameters. The parameter values can indicate to use the default values
     // in case the audio policy manager has no specific requirements for the output being opened.
     // When the function returns, the parameter values reflect the actual values used by the audio hardware output stream.
