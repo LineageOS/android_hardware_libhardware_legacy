@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAVX//9Bc\u003d",
+        "filename": "include/hardware_legacy/AudioHardwareInterface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2012-07-26T23:00:31Z",
+      "side": 1,
+      "message": "There is a separate ifdef for FM, something like QCOM_FM_ENABLED in the CAF libs.",
+      "revId": "d9d7553774c411c8bd8fbf87dd9f38cb4aab3866",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
