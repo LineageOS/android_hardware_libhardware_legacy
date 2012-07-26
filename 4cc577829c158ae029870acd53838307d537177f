@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAVX//8+g\u003d",
+        "filename": "include/hardware_legacy/AudioPolicyInterface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2012-07-26T23:21:02Z",
+      "side": 1,
+      "message": "whitespace",
+      "revId": "4cc577829c158ae029870acd53838307d537177f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAVX//8+k\u003d",
+        "filename": "include/hardware_legacy/AudioPolicyManagerBase.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2012-07-26T23:21:02Z",
+      "side": 1,
+      "message": "I think you can just ifdef the method name, as the other parameters seem to be the same.",
+      "revId": "4cc577829c158ae029870acd53838307d537177f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
