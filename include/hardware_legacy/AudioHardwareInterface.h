@@ -262,9 +262,15 @@ public:
      *  session for control path */
     virtual AudioStreamOut* openOutputSession(
                                 uint32_t devices,
-                                int *format=0,
-                                status_t *status=0,
-                                int sessionId=-1) {return 0;};
+                                int *format,
+                                status_t *status,
+                                int sessionId=-1
+#ifndef QCOM_ICS_LPA_COMPAT
+                                ,
+                                uint32_t sampleRate=0,
+                                uint32_t channels=0
+#endif
+                               ) {return 0;};
 #endif
     virtual    void        closeOutputStream(AudioStreamOut* out) = 0;
 
