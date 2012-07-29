@@ -66,6 +66,10 @@ AudioHardwareInterface* AudioHardwareInterface::create()
     return NULL;
 }
 
+AudioBroadcastStream::~AudioBroadcastStream()
+{
+}
+
 AudioStreamOut::~AudioStreamOut()
 {
 }
