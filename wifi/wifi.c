@@ -666,6 +666,12 @@ int phy_lookup()
 
     n = scandir("/sys/class/ieee80211", &namelist, dir_filter,
                 (int (*)(const struct dirent**, const struct dirent**))alphasort);
+
+    if (n == -1) {
+        ALOGE("unexpected - found zero phys in /sys/class/ieee80211");
+        return -1;
+    }
+
     if (n != 1) {
         ALOGE("unexpected - found %d phys in /sys/class/ieee80211", n);
         for (i = 0; i < n; i++)
