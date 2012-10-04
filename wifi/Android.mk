@@ -42,7 +42,7 @@ endif
 
 LOCAL_SRC_FILES += wifi/wifi.c
 
-ifeq ($(BOARD_HAVE_SAMSUNG_WIFI),true)
+ifeq ($(BOARD_HAS_SAMSUNG_WIFI),true)
     LOCAL_CFLAGS += -DSAMSUNG_WIFI
 endif
 
