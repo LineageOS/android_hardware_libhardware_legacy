@@ -839,6 +839,16 @@ int wifi_start_supplicant(int p2p_supported)
         serial = __system_property_serial(pi);
     }
 #endif
+
+#ifdef WIFI_DRIVER_MODULE_PATH
+    /* The ath6kl driver needs the interface up in order to scan! */
+    if (!strncmp(DRIVER_MODULE_NAME, "ath6kl", 6)) {
+        ifc_init();
+        ifc_up("wlan0");
+        sleep(2);
+    }
+#endif
+
     property_get("wifi.interface", primary_iface, WIFI_TEST_INTERFACE);
 
     property_set("ctl.start", supplicant_name);
