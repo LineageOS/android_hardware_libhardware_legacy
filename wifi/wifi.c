@@ -713,6 +713,14 @@ int wifi_start_supplicant_common(const char *config_file)
         serial = pi->serial;
     }
 #endif
+
+    /* The ar6k driver needs the interface up in order to scan! */
+    if (!strncmp(DRIVER_MODULE_NAME, "ar6000", 6)) {
+        ifc_init();
+        ifc_up("wlan0");
+        sleep(2);
+    }
+
     property_get("wifi.interface", iface, WIFI_TEST_INTERFACE);
     snprintf(daemon_cmd, PROPERTY_VALUE_MAX, "%s:-i%s -c%s", SUPPLICANT_NAME, iface, config_file);
     property_set("ctl.start", daemon_cmd);
