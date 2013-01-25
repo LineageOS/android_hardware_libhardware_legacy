@@ -317,7 +317,11 @@ public:
         DEVICE_IN_VOICE_CALL = 0x4000000,
         DEVICE_IN_BACK_MIC = 0x8000000,
 #ifdef QCOM_FM_ENABLED
+#ifdef STE_FM
+        DEVICE_IN_FM_RX = 0x1000000,
+#else
         DEVICE_IN_FM_RX = 0x20000000,
+#endif
         DEVICE_IN_FM_RX_A2DP = 0x40000000,
 #endif
         DEVICE_IN_DEFAULT = DEVICE_IN_BUILTIN_MIC,
