@@ -290,6 +290,8 @@ int wifi_load_driver()
     int count = 100; /* wait at most 20 seconds for completion */
     char module_arg2[256];
 
+    property_set(DRIVER_PROP_NAME, "loading");
+
 #ifdef SAMSUNG_WIFI
     char* type = get_samsung_wifi_type();
 
