@@ -1,0 +1,8 @@
+Change-Id: I0bd69b429d4fdb8674eaeb4f57fcdeae3e967020
+Code-Review+2: Steve Kondik <shade@chemlab.org>
+Verified+1: Steve Kondik <shade@chemlab.org>
+Submitted-by: Steve Kondik <shade@chemlab.org>
+Submitted-at: Sun, 24 Mar 2013 15:37:26 -0700
+Reviewed-on: http://review.cyanogenmod.org/33297
+Project: CyanogenMod/android_hardware_libhardware_legacy
+Branch: refs/heads/cm-10.1
