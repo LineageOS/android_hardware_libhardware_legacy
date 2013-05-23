@@ -2481,7 +2481,10 @@ audio_devices_t AudioPolicyManagerBase::getDeviceForInputSource(int inputSource)
         }
         break;
     case AUDIO_SOURCE_CAMCORDER:
-        if (mAvailableInputDevices & AUDIO_DEVICE_IN_BACK_MIC) {
+        // if both microphone devices are available, allow both to be used for stereo recording
+        if ((mAvailableInputDevices & AUDIO_DEVICE_IN_BACK_MIC) && (mAvailableInputDevices & AUDIO_DEVICE_IN_BUILTIN_MIC)) {
+             device = AUDIO_DEVICE_IN_BACK_MIC + AUDIO_DEVICE_IN_BUILTIN_MIC;
+        } else if (mAvailableInputDevices & AUDIO_DEVICE_IN_BACK_MIC) {
             device = AUDIO_DEVICE_IN_BACK_MIC;
         } else if (mAvailableInputDevices & AUDIO_DEVICE_IN_BUILTIN_MIC) {
             device = AUDIO_DEVICE_IN_BUILTIN_MIC;
