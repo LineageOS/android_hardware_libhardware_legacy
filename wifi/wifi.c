@@ -132,6 +132,7 @@ static const char DRIVER_MODULE_AP_ARG[] = WIFI_DRIVER_MODULE_AP_ARG;
 #endif
 static const char FIRMWARE_LOADER[]     = WIFI_FIRMWARE_LOADER;
 static const char DRIVER_PROP_NAME[]    = "wlan.driver.status";
+static const char DRIVER_ARG_PROP_NAME[] = "wlan.driver.arg";
 static const char SUPPLICANT_NAME[]     = "wpa_supplicant";
 static const char SUPP_PROP_NAME[]      = "init.svc.wpa_supplicant";
 static const char P2P_SUPPLICANT_NAME[] = "p2p_supplicant";
@@ -288,6 +289,7 @@ int wifi_load_driver()
 #ifdef WIFI_DRIVER_MODULE_PATH
     char driver_status[PROPERTY_VALUE_MAX];
     int count = 100; /* wait at most 20 seconds for completion */
+    char module_arg[PROPERTY_VALUE_MAX];
     char module_arg2[256];
 #ifdef SAMSUNG_WIFI
     char* type = get_samsung_wifi_type();
@@ -309,7 +311,8 @@ int wifi_load_driver()
     usleep(200000);
 #endif
 
-    if (insmod(DRIVER_MODULE_PATH, DRIVER_MODULE_ARG) < 0) {
+    property_get(DRIVER_ARG_PROP_NAME, module_arg, DRIVER_MODULE_ARG);
+    if (insmod(DRIVER_MODULE_PATH, module_arg) < 0) {
 #endif
 
 #ifdef WIFI_EXT_MODULE_NAME
