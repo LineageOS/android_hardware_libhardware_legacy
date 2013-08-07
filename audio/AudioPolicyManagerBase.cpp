@@ -581,7 +581,7 @@ audio_io_handle_t AudioPolicyManagerBase::getOutput(AudioSystem::stream_type str
                                                    format,
                                                    channelMask,
                                                    (audio_output_flags_t)flags);
-    if (profile != NULL) {
+    if (profile != NULL && profile != 0) {
         AudioOutputDescriptor *outputDesc = NULL;
 
         for (size_t i = 0; i < mOutputs.size(); i++) {
