@@ -63,12 +63,13 @@ enum audio_source {
     AUDIO_SOURCE_VOICE_RECOGNITION = 6,
     AUDIO_SOURCE_VOICE_COMMUNICATION = 7,
     AUDIO_SOURCE_REMOTE_SUBMIX = 8,
-#if defined(QCOM_FM_ENABLED) || defined(STE_FM)
     AUDIO_SOURCE_FM_RX = 9,
     AUDIO_SOURCE_FM_RX_A2DP = 10,
-    AUDIO_SOURCE_MAX = AUDIO_SOURCE_FM_RX_A2DP,
+#if defined (STE_FM)
+    AUDIO_SOURCE_FM_RX = 11,
+    AUDIO_SOURCE_MAX = AUDIO_SOURCE_FM_RX,
 #else
-    AUDIO_SOURCE_MAX = AUDIO_SOURCE_REMOTE_SUBMIX,
+    AUDIO_SOURCE_MAX = AUDIO_SOURCE_FM_RX_A2DP,
 #endif
     AUDIO_SOURCE_LIST_END  // must be last - used to validate audio source type
 };
@@ -263,10 +264,8 @@ public:
         DEVICE_OUT_USB_ACCESSORY = 0x2000,
         DEVICE_OUT_USB_DEVICE = 0x4000,
 #endif
-#if defined(QCOM_FM_ENABLED) || defined(STE_FM)
         DEVICE_OUT_FM = 0x8000,
         DEVICE_OUT_FM_TX = 0x10000,
-#endif
 #ifdef QCOM_HARDWARE
         DEVICE_OUT_ANC_HEADSET = 0x20000,
         DEVICE_OUT_ANC_HEADPHONE = 0x40000,
@@ -284,9 +283,6 @@ public:
                 DEVICE_OUT_USB_ACCESSORY | DEVICE_OUT_USB_DEVICE |
                 DEVICE_OUT_ANC_HEADSET | DEVICE_OUT_ANC_HEADPHONE |
                 DEVICE_OUT_PROXY |
-#endif
-#if defined(QCOM_FM_ENABLED) || defined(STE_FM)
-                DEVICE_OUT_FM | DEVICE_OUT_FM_TX |
 #endif
                 DEVICE_OUT_DEFAULT),
         DEVICE_OUT_ALL_A2DP = (DEVICE_OUT_BLUETOOTH_A2DP | DEVICE_OUT_BLUETOOTH_A2DP_HEADPHONES |
@@ -334,8 +330,8 @@ public:
                 DEVICE_IN_ANC_HEADSET |
                 DEVICE_IN_ANLG_DOCK_HEADSET | DEVICE_IN_PROXY |
 #endif
-#if defined(QCOM_FM_ENABLED) || defined(STE_FM)
-                DEVICE_IN_FM_RX | DEVICE_IN_FM_RX_A2DP |
+#if defined (STE_FM)
+                DEVICE_IN_FM_RX |
 #endif
                 DEVICE_IN_DEFAULT)
     };
