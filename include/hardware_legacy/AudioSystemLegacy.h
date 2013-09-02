@@ -65,12 +65,7 @@ enum audio_source {
     AUDIO_SOURCE_REMOTE_SUBMIX = 8,
     AUDIO_SOURCE_FM_RX = 9,
     AUDIO_SOURCE_FM_RX_A2DP = 10,
-#if defined (STE_FM)
-    AUDIO_SOURCE_FM_RX = 11,
-    AUDIO_SOURCE_MAX = AUDIO_SOURCE_FM_RX,
-#else
     AUDIO_SOURCE_MAX = AUDIO_SOURCE_FM_RX_A2DP,
-#endif
     AUDIO_SOURCE_LIST_END  // must be last - used to validate audio source type
 };
 
@@ -319,19 +314,12 @@ public:
         DEVICE_IN_DEFAULT = 0x80000000,
 #endif
 
-#if defined (STE_FM)
-        DEVICE_IN_FM_RX = 0x1000000,
-#endif
-
         DEVICE_IN_ALL = (DEVICE_IN_COMMUNICATION | DEVICE_IN_AMBIENT | DEVICE_IN_BUILTIN_MIC |
                 DEVICE_IN_BLUETOOTH_SCO_HEADSET | DEVICE_IN_WIRED_HEADSET | DEVICE_IN_AUX_DIGITAL |
                 DEVICE_IN_VOICE_CALL | DEVICE_IN_BACK_MIC |
 #ifdef QCOM_HARDWARE
                 DEVICE_IN_ANC_HEADSET |
                 DEVICE_IN_ANLG_DOCK_HEADSET | DEVICE_IN_PROXY |
-#endif
-#if defined (STE_FM)
-                DEVICE_IN_FM_RX |
 #endif
                 DEVICE_IN_DEFAULT)
     };
