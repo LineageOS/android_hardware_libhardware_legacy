@@ -16,6 +16,23 @@
       "revId": "946beeefd3f5604a89f217d380b16590d1dd9bd0",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_2a1a6318",
+        "filename": "wifi/wifi.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 10
+      },
+      "writtenOn": "2013-09-29T11:41:07Z",
+      "side": 1,
+      "message": "Got it. This free(), right? Just add a \"if (n\u003e0)\" check before running the free().",
+      "revId": "946beeefd3f5604a89f217d380b16590d1dd9bd0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
