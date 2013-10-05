@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a41bdd9_62265818",
+        "filename": "include/hardware_legacy/AudioSystemLegacy.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1039
+      },
+      "writtenOn": "2013-10-05T23:58:40Z",
+      "side": 1,
+      "message": "those ifdefs are useless",
+      "revId": "88d8114a115efb9df49034f124c4bfdd6c589665",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
