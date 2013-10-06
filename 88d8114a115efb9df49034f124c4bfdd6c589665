@@ -16,6 +16,24 @@
       "revId": "88d8114a115efb9df49034f124c4bfdd6c589665",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a41bdd9_65e74213",
+        "filename": "include/hardware_legacy/AudioSystemLegacy.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 444
+      },
+      "writtenOn": "2013-10-06T08:43:45Z",
+      "side": 1,
+      "message": "Which ones - QCOM_FM_ENABLED, QCOM_NEW_FM or both?\n\nIf QCOM_NEW_FM - it was supposed to seperate the old FM volume API that was cherry-picked from MR1 from the new one for MR2, so both could be supported. However, due to a bunch of stuff missing in frameworks/av, compiling with the old one doesn\u0027t even work, so in that sense all of this is useless yes.",
+      "parentUuid": "9a41bdd9_62265818",
+      "revId": "88d8114a115efb9df49034f124c4bfdd6c589665",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
