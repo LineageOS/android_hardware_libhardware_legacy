@@ -16,6 +16,24 @@
       "revId": "e3e01214a7f3c2acea4c04cf29624afe5908eb58",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a4dcd0f_8720494b",
+        "filename": "audio/audio_policy_hal.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 5678
+      },
+      "writtenOn": "2013-10-29T13:22:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a4dcd0f_270a95d3",
+      "revId": "e3e01214a7f3c2acea4c04cf29624afe5908eb58",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
