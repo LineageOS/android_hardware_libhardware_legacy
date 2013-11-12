@@ -43,7 +43,13 @@ ifdef WIFI_EXT_MODULE_NAME
 LOCAL_CFLAGS += -DWIFI_EXT_MODULE_NAME=\"$(WIFI_EXT_MODULE_NAME)\"
 endif
 
-LOCAL_SRC_FILES += wifi/wifi.c
+ifeq ($(TARGET_CUSTOM_WIFI),)
+       LOCAL_SRC_FILES += \
+               wifi/wifi.c
+else
+       LOCAL_SRC_FILES += \
+               $(TARGET_CUSTOM_WIFI)
+endif
 
 ifeq ($(BOARD_HAVE_SAMSUNG_WIFI),true)
 LOCAL_CFLAGS += -DSAMSUNG_WIFI
