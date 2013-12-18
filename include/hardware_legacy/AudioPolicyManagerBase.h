@@ -524,7 +524,7 @@ protected:
         void loadGlobalConfig(cnode *root);
         status_t loadAudioPolicyConfig(const char *path);
         void defaultAudioPolicyConfig(void);
-
+        static bool isVirtualInputDevice(audio_devices_t device);
 
         AudioPolicyClientInterface *mpClientInterface;  // audio policy client interface
         audio_io_handle_t mPrimaryOutput;              // primary output handle
@@ -593,7 +593,6 @@ private:
         // updates device caching and output for streams that can influence the
         //    routing of notifications
         void handleNotificationRoutingForStream(AudioSystem::stream_type stream);
-        static bool isVirtualInputDevice(audio_devices_t device);
 };
 
 };
