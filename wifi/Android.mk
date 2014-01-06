@@ -42,6 +42,10 @@ endif
 
 LOCAL_SRC_FILES += wifi/wifi.c
 
+ifeq ($(TARGET_BOARD_PLATFORM),mt6589)
+LOCAL_CFLAGS += -DMTK_MT6589
+endif
+
 ifeq ($(BOARD_HAVE_SAMSUNG_WIFI),true)
 LOCAL_CFLAGS += -DSAMSUNG_WIFI
 endif

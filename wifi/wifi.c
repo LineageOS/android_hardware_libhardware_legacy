@@ -22,6 +22,9 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <poll.h>
+#ifdef MTK_MT6589
+#include <cutils/sockets.h>
+#endif
 
 #ifdef USES_TI_MAC80211
 #include <dirent.h>
@@ -74,6 +77,10 @@ static char primary_iface[PROPERTY_VALUE_MAX];
 struct nl_sock *nl_soc;
 struct nl_cache *nl_cache;
 struct genl_family *nl80211;
+#endif
+
+#ifdef MTK_MT6589
+#define HALD_SUPPORT
 #endif
 
 #ifndef WIFI_DRIVER_MODULE_ARG
@@ -278,6 +285,11 @@ int wifi_load_driver()
     char driver_status[PROPERTY_VALUE_MAX];
     int count = 100; /* wait at most 20 seconds for completion */
     char module_arg2[256];
+
+#ifdef MTK_MT6589
+    wifi_set_power(1);
+#endif
+
 #ifdef SAMSUNG_WIFI
     char* type = get_samsung_wifi_type();
 
@@ -332,6 +344,11 @@ int wifi_load_driver()
     wifi_unload_driver();
     return -1;
 #else
+
+#ifdef MTK_MT6589
+    if (0 > wifi_set_power(1)) return -1;
+#endif
+
     property_set(DRIVER_PROP_NAME, "ok");
     return 0;
 #endif
@@ -359,6 +376,14 @@ int wifi_unload_driver()
     } else
         return -1;
 #else
+#ifdef MTK_MT6589
+    if (wifi_set_p2p_mode(0, 0) < 0) {
+        ALOGE("Unable to reset MTK P2P mode");
+    }
+
+    wifi_set_power(0);
+#endif
+
     property_set(DRIVER_PROP_NAME, "unloaded");
     return 0;
 #endif
@@ -1142,6 +1167,12 @@ const char *wifi_get_fw_path(int fw_type)
 
 int wifi_change_fw_path(const char *fwpath)
 {
+#ifdef MTK_MT6589
+    if (!fwpath)
+        return 0;
+
+    return wifi_set_p2p_mode(1, 0);
+#else
     int len;
     int fd;
     int ret = 0;
@@ -1160,9 +1191,162 @@ int wifi_change_fw_path(const char *fwpath)
     }
     close(fd);
     return ret;
+#endif
 }
 
 int wifi_set_mode(int mode) {
     wifi_mode = mode;
     return 0;
 }
+
+
+#ifdef MTK_MT6589
+
+#define HAL_DAEMON_CMD              "hal"
+#define HAL_DAEMON_NAME             "hald"
+#define HAL_DAEMON_CMD_LENGTH       255
+
+#define WIFI_POWER_PATH                 "/dev/wmtWifi"
+
+int halDoMonitor(int sock)
+{
+    char *buffer = malloc(4096);
+
+    while(1) {
+        fd_set read_fds;
+        struct timeval to;
+        int rc = 0;
+
+        to.tv_sec = 10;
+        to.tv_usec = 0;
+
+        FD_ZERO(&read_fds);
+        FD_SET(sock, &read_fds);
+
+        if ((rc = select(sock +1, &read_fds, NULL, NULL, &to)) < 0) {
+            ALOGE("Error in select (%s)", strerror(errno));
+            free(buffer);
+            close(sock);
+            return errno;
+        } else if (!rc) {
+            continue;
+            ALOGE("[TIMEOUT]");
+            close(sock);
+            return ETIMEDOUT;
+        } else if (FD_ISSET(sock, &read_fds)) {
+            memset(buffer, 0, 4096);
+            if ((rc = read(sock, buffer, 4096)) <= 0) {
+                if (rc == 0) {
+                    ALOGE("Lost connection to Hald - did it crash?");
+                }
+                else {
+                    ALOGE("Error reading data (%s)", strerror(errno));
+                }
+                close(sock);
+                free(buffer);
+                if (rc == 0) {
+                    return ECONNRESET;
+                }
+                return errno;
+            }
+
+            int offset = 0;
+            int i = 0;
+
+            for (i = 0; i < rc; i++) {
+                if (buffer[i] == '\0') {
+                    int code;
+                    char tmp[4];
+
+                    strncpy(tmp, buffer + offset, 3);
+                    tmp[3] = '\0';
+                    code = atoi(tmp);
+
+                    ALOGD("Hal cmd response code: \"%d\"", code);
+                    if (code >= 200 && code < 600) {
+                        int ret = 0;
+
+                        switch(code) {
+                            /*the requested action did not take place.*/
+                            case 400:
+                            case 500:
+                            case 501:
+                                ret = -1;
+                                break;
+                            /*Requested action has been successfully completed*/
+                            default:
+                                ret = 0;
+                                break;
+                        }
+
+                        close(sock);
+                        free(buffer);
+                        return ret;
+                    }
+                    offset = i + 1;
+                }
+            }
+        }
+    }
+    close(sock);
+    free(buffer);
+    return 0;
+}
+
+int halDoCommand(const char *cmd)
+{
+    int sock;
+    char *final_cmd;
+
+    if ((sock = socket_local_client(HAL_DAEMON_NAME,
+                                     ANDROID_SOCKET_NAMESPACE_RESERVED,
+                                     SOCK_STREAM)) < 0) {
+        ALOGE("Error connecting (%s)", strerror(errno));
+        //exit(4);
+        /*return error if hald is not existing*/
+        return errno;
+    }
+
+    asprintf(&final_cmd, "%s %s", HAL_DAEMON_CMD, cmd);
+
+    ALOGD("Hal cmd: \"%s\"", final_cmd);
+
+    if (write(sock, final_cmd, strlen(final_cmd) + 1) < 0) {
+        free(final_cmd);
+	close(sock);
+        ALOGE("Hal cmd error: \"%s\"", final_cmd);
+        return errno;
+    }
+    free(final_cmd);
+    return halDoMonitor(sock);
+}
+
+int wifi_set_power(int enable) {
+    if(enable) {
+        ALOGD("wifi_set_power on!");
+        return halDoCommand("load wifi");
+    }
+    else {
+        ALOGD("wifi_set_power off!");
+        return halDoCommand("unload wifi");
+    }
+}
+
+int wifi_set_p2p_mode(int enable, int mode) {
+    if(enable) {
+        if(mode) {
+            return halDoCommand("load hotspot");
+        }
+        else {
+            return halDoCommand("load p2p");
+        }
+    }
+    else {
+        halDoCommand("unload p2p");
+        halDoCommand("unload hotspot");
+    }
+
+    return 0;
+}
+
+#endif /* MTK_MT6589 */
