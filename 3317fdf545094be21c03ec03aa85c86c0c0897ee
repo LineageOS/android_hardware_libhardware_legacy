@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da0c15f0_cfda5d78",
+        "filename": "vibrator/Android.mk",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 6386
+      },
+      "writtenOn": "2014-06-06T18:01:52Z",
+      "side": 1,
+      "message": "what if we overwrite the file instead of add the custom implementation, as in \"LOCAL_SRC_FILES :\u003d $(BOARD_HAS_VIBRATOR_IMPLEMENTATION)\".\n\nwill it affect another repository besides this one?",
+      "revId": "3317fdf545094be21c03ec03aa85c86c0c0897ee",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
