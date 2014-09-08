@@ -1145,12 +1145,22 @@ int wifi_change_fw_path(const char *fwpath)
     int len;
     int fd;
     int ret = 0;
+    char wlan_driver[PROPERTY_VALUE_MAX];
+    char wifi_driver_param_path[PROPERTY_VALUE_MAX];
 
     if (!fwpath)
         return ret;
-    fd = TEMP_FAILURE_RETRY(open(WIFI_DRIVER_FW_PATH_PARAM, O_WRONLY));
+
+    property_get("wifi.driver_param_path", wifi_driver_param_path, NULL);
+    if (strlen(wifi_driver_param_path)) {
+        fd = TEMP_FAILURE_RETRY(open(wifi_driver_param_path, O_WRONLY));
+    } else {
+        strcpy(wifi_driver_param_path, WIFI_DRIVER_FW_PATH_PARAM);
+        fd = TEMP_FAILURE_RETRY(open(wifi_driver_param_path, O_WRONLY));
+    }
+
     if (fd < 0) {
-        ALOGE("Failed to open wlan fw path param (%s)", strerror(errno));
+        ALOGE("Failed to open wlan fw path(%s) param (%s)", wifi_driver_param_path, strerror(errno));
         return -1;
     }
     len = strlen(fwpath) + 1;
