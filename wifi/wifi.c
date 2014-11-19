@@ -104,6 +104,9 @@ struct genl_family *nl80211;
 #endif
 #define WIFI_TEST_INTERFACE		"sta"
 
+#ifndef WIFI_DRIVER_NVRAM_PATH
+#define WIFI_DRIVER_NVRAM_PATH		NULL
+#endif
 #ifndef WIFI_DRIVER_FW_PATH_STA
 #define WIFI_DRIVER_FW_PATH_STA		NULL
 #endif
@@ -128,6 +131,10 @@ static const char EXT_MODULE_PATH[] = WIFI_EXT_MODULE_PATH;
 
 #ifndef WIFI_DRIVER_FW_PATH_PARAM
 #define WIFI_DRIVER_FW_PATH_PARAM	"/sys/module/wlan/parameters/fwpath"
+#endif
+
+#ifndef WIFI_DRIVER_NVRAM_PATH_PARAM
+#define WIFI_DRIVER_NVRAM_PATH_PARAM	"/sys/module/wlan/parameters/nvram_path"
 #endif
 
 #define WIFI_DRIVER_LOADER_DELAY	1000000
@@ -1091,6 +1098,49 @@ void wifi_close_supplicant_connection()
 int wifi_command(const char *command, char *reply, size_t *reply_len)
 {
     return wifi_send_command(command, reply, reply_len);
+}
+
+const char *wifi_get_nvram_path(void)
+{
+    return WIFI_DRIVER_NVRAM_PATH;
+}
+
+int wifi_change_nvram_path(const char *nvram_path)
+{
+    int len;
+    int fd;
+    int ret = 0;
+    char nvram_str[1024] = { 0 };
+    const char *type = NULL;
+
+    if (nvram_path == NULL) {
+        return ret;
+    }
+
+    ALOGD("Change firmware nvram_path to %s\n", nvram_path);
+
+    fd = TEMP_FAILURE_RETRY(open(WIFI_DRIVER_NVRAM_PATH_PARAM, O_WRONLY));
+    if (fd < 0) {
+        ALOGE("Failed to open wlan nvram path param (%s)", strerror(errno));
+        return -1;
+    }
+    len = strlen(nvram_path) + 1;
+
+#ifdef SAMSUNG_WIFI
+    type = get_samsung_wifi_type();
+#endif
+    snprintf(nvram_str, sizeof(nvram_str), "%s%s",
+             nvram_path, type != NULL ? type : "");
+
+    ALOGD("Altered firmware nvram_path to %s\n", nvram_str);
+
+    len = strlen(nvram_str) + 1;
+    if (TEMP_FAILURE_RETRY(write(fd, nvram_str, len)) != len) {
+        ALOGE("Failed to write wlan nvram path param (%s)", strerror(errno));
+        ret = -1;
+    }
+    close(fd);
+    return ret;
 }
 
 const char *wifi_get_fw_path(int fw_type)

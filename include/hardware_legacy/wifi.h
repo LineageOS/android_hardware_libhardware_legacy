@@ -131,6 +131,16 @@ int do_dhcp_request(int *ipaddr, int *gateway, int *mask,
 const char *get_dhcp_error_string();
 
 /**
+ * Return the path to the nvram calibration file.
+ */
+const char *wifi_get_nvram_path(void);
+
+/**
+ * Change the path to nvram for the wlan driver
+ */
+int wifi_change_nvram_path(const char *nvram_path);
+
+/**
  * Return the path to requested firmware
  */
 #define WIFI_GET_FW_PATH_STA	0
