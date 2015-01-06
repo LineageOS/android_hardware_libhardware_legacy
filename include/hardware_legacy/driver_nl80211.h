@@ -123,6 +123,7 @@ struct wpa_driver_nl80211_data {
 	struct dl_list list;
 	struct dl_list wiphy_list;
 	char phyname[32];
+	u8 perm_addr[ETH_ALEN];
 	void *ctx;
 	int ifindex;
 	int if_removed;
