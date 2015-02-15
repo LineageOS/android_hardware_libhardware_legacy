@@ -693,7 +693,11 @@ int add_remove_p2p_interface(int add)
     } else {
         ret = execute_nl_interface_cmd(P2P_INTERFACE, NL80211_IFTYPE_STATION,
                                        NL80211_CMD_DEL_INTERFACE);
-        if (ret != 0) {
+        if (ret == -ENODEV) {
+            ret = 0;
+            ALOGW("could not remove P2P interface: %d", ret);
+            goto cleanup;
+        } else if (ret != 0) {
             ALOGE("could not remove P2P interface: %d", ret);
             goto cleanup;
         }
