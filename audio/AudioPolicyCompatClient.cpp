@@ -85,10 +85,19 @@ status_t AudioPolicyCompatClient::closeInput(audio_io_handle_t input)
     return mServiceOps->close_input(mService, input);
 }
 
+#ifndef MR0_AUDIO_BLOB
 status_t AudioPolicyCompatClient::invalidateStream(AudioSystem::stream_type stream)
 {
     return mServiceOps->invalidate_stream(mService, (audio_stream_type_t)stream);
 }
+#else
+status_t AudioPolicyCompatClient::setStreamOutput(AudioSystem::stream_type stream,
+                                                audio_io_handle_t output)
+{
+    return mServiceOps->set_stream_output(mService, (audio_stream_type_t)stream,
+                                            output);
+}
+#endif
 
 status_t AudioPolicyCompatClient::moveEffects(int session, audio_io_handle_t srcOutput,
                                                audio_io_handle_t dstOutput)

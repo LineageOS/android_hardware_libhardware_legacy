@@ -56,7 +56,11 @@ public:
                                         audio_format_t *pFormat,
                                         audio_channel_mask_t *pChannelMask);
     virtual status_t closeInput(audio_io_handle_t input);
+#ifndef MR0_AUDIO_BLOB
     virtual status_t invalidateStream(AudioSystem::stream_type stream);
+#else
+    virtual status_t setStreamOutput(AudioSystem::stream_type stream, audio_io_handle_t output);
+#endif
     virtual status_t moveEffects(int session,
                                  audio_io_handle_t srcOutput,
                                  audio_io_handle_t dstOutput);
