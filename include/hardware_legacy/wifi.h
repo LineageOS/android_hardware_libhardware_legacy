@@ -1,4 +1,4 @@
-/*
+x/*
  * Copyright (C) 2008 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +20,20 @@
 #if __cplusplus
 extern "C" {
 #endif
+
+/**
+ * Load kernel module
+ *
+ * @return 0 on success, < 0 on failure.
+ */
+int insmod(const char *filename, const char *args);
+
+/**
+* Unload kernel module
+*
+* @return 0 on success, < 0 on failure.
+*/
+int rmmod(const char *modname);
 
 /**
  * Load the Wi-Fi driver.
