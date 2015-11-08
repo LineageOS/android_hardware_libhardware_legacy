@@ -16,6 +16,24 @@
       "revId": "d9b185538379845287692af3d7489b65b990aaa5",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1f2f7f8d_3a91e653",
+        "filename": "include/hardware_legacy/AudioSystemLegacy.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2015-11-08T05:03:13Z",
+      "side": 1,
+      "message": "Derp, yes. Hold off on the 8960 stuff, we should be able to do it not so intrusively across the system.",
+      "parentUuid": "1f2f7f8d_9a7d7a70",
+      "revId": "d9b185538379845287692af3d7489b65b990aaa5",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
