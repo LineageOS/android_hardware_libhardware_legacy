@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f2f7f8d_9a7d7a70",
+        "filename": "include/hardware_legacy/AudioSystemLegacy.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-11-08T04:44:35Z",
+      "side": 1,
+      "message": "This is a standard Android device.",
+      "revId": "d9b185538379845287692af3d7489b65b990aaa5",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
