@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include <hardware_legacy/vibrator.h>
-#include "qemu.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -27,12 +26,6 @@ int vibrator_exists()
 {
     int fd;
 
-#ifdef QEMU_HARDWARE
-    if (qemu_check()) {
-        return 1;
-    }
-#endif
-
     fd = open(THE_DEVICE, O_RDWR);
     if(fd < 0)
         return 0;
@@ -44,12 +37,6 @@ static int sendit(int timeout_ms)
 {
     int nwr, ret, fd;
     char value[20];
-
-#ifdef QEMU_HARDWARE
-    if (qemu_check()) {
-        return qemu_control_command( "vibrator:%d", timeout_ms );
-    }
-#endif
 
     fd = open(THE_DEVICE, O_RDWR);
     if(fd < 0)
