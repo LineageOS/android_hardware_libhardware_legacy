@@ -349,9 +349,9 @@ int is_wifi_driver_loaded() {
 
 int wifi_load_driver()
 {
-#ifdef WIFI_DRIVER_MODULE_PATH
     char driver_status[PROPERTY_VALUE_MAX];
     int count = 100; /* wait at most 20 seconds for completion */
+#ifdef WIFI_DRIVER_MODULE_PATH
     char module_arg2[256];
 
     if (is_wifi_driver_loaded()) {
@@ -386,6 +386,16 @@ int wifi_load_driver()
 #endif
         return -1;
     }
+#else
+#ifdef WIFI_DRIVER_STATE_CTRL_PARAM
+    if (is_wifi_driver_loaded()) {
+        return 0;
+    }
+
+    if (wifi_change_driver_state(WIFI_DRIVER_STATE_ON) < 0)
+        return -1;
+#endif
+#endif
 
     if (strcmp(FIRMWARE_LOADER,"") == 0) {
         /* usleep(WIFI_DRIVER_LOADER_DELAY); */
@@ -409,18 +419,6 @@ int wifi_load_driver()
     property_set(DRIVER_PROP_NAME, "timeout");
     wifi_unload_driver();
     return -1;
-#else
-#ifdef WIFI_DRIVER_STATE_CTRL_PARAM
-    if (is_wifi_driver_loaded()) {
-        return 0;
-    }
-
-    if (wifi_change_driver_state(WIFI_DRIVER_STATE_ON) < 0)
-        return -1;
-#endif
-    property_set(DRIVER_PROP_NAME, "ok");
-    return 0;
-#endif
 }
 
 int wifi_unload_driver()
