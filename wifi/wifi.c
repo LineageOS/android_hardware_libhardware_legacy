@@ -55,6 +55,10 @@
 #define _REALLY_INCLUDE_SYS__SYSTEM_PROPERTIES_H_
 #include <sys/_system_properties.h>
 
+#ifdef SAMSUNG_WIFI
+#include <samsung_macloader.h>
+#endif
+
 extern int do_dhcp();
 extern int ifc_init();
 extern void ifc_close();
@@ -176,7 +180,7 @@ static char supplicant_prop_name[PROPERTY_KEY_MAX];
 char* get_samsung_wifi_type()
 {
     char buf[10];
-    int fd = open("/data/.cid.info", O_RDONLY);
+    int fd = open(CID_PATH, O_RDONLY);
     if (fd < 0)
         return NULL;
 
