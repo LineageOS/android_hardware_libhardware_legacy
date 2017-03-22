@@ -176,7 +176,7 @@ static char supplicant_prop_name[PROPERTY_KEY_MAX];
 char* get_samsung_wifi_type()
 {
     char buf[10];
-    int fd = open(CID_PATH, O_RDONLY);
+    int fd = open("/data/.cid.info", O_RDONLY);
     if (fd < 0)
         return NULL;
 
