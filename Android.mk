@@ -20,7 +20,8 @@ ifeq ($(KERNEL_HAS_FINIT_MODULE), false)
 LOCAL_CFLAGS += -DNO_FINIT_MODULE
 endif
 
-ifdef USES_TI_MAC80211
+ifeq ($(USES_TI_MAC80211), true)
+LOCAL_CFLAGS += -DUSES_TI_MAC80211
 ifneq ($(wildcard external/libnl),)
 LOCAL_SHARED_LIBRARIES += libnl
 LOCAL_C_INCLUDES += external/libnl/include
