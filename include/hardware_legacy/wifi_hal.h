@@ -464,6 +464,7 @@ typedef struct {
                                          wifi_roaming_config *roaming_config);
     wifi_error (*wifi_set_radio_mode_change_handler)(wifi_request_id id, wifi_interface_handle
                         iface, wifi_radio_mode_change_handler eh);
+    wifi_error (*wifi_set_qpower)(wifi_interface_handle iface, u8 powersave);
 } wifi_hal_fn;
 wifi_error init_wifi_vendor_hal_func_table(wifi_hal_fn *fn);
 #ifdef __cplusplus
