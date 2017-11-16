@@ -411,6 +411,7 @@ typedef struct {
                                                fw_roaming_state_t state);
     wifi_error (*wifi_configure_roaming)(wifi_interface_handle handle,
                                          wifi_roaming_config *roaming_config);
+    wifi_error (*wifi_set_qpower)(wifi_interface_handle iface, u8 powersave);
 } wifi_hal_fn;
 wifi_error init_wifi_vendor_hal_func_table(wifi_hal_fn *fn);
 #ifdef __cplusplus
