@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6a2a8271_9f3d8765",
+        "filename": "include/hardware_legacy/wifi_config.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2018-01-18T04:26:03Z",
+      "side": 1,
+      "message": "wtf happened to the formatting here??",
+      "revId": "ee21f0f3dc77ce23935cca94ea1839026f96ddd6",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
