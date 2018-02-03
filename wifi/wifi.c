@@ -139,6 +139,11 @@ static const char EXT_MODULE_PATH[] = WIFI_EXT_MODULE_PATH;
 #define WIFI_DRIVER_FW_PATH_PARAM	"/sys/module/wlan/parameters/fwpath"
 #endif
 
+#ifdef WIFI_DRIVER_OPERSTATE_PATH
+#define OPERSTATE_UP "up"
+#define OPERSTATE_DOWN "down"
+#endif
+
 #define WIFI_DRIVER_LOADER_DELAY	1000000
 
 static const char IFACE_DIR[]           = "/data/system/wpa_supplicant";
@@ -347,6 +352,40 @@ int is_wifi_driver_loaded() {
 #endif
 }
 
+#ifdef WIFI_DRIVER_OPERSTATE_PATH
+int is_wifi_driver_ready() {
+    struct stat sbuf;
+    FILE *fstate;
+    char operstate[8];
+    int open_count = 25, read_count = 25;
+    while (open_count-- >= 0) {
+        if (stat(WIFI_DRIVER_OPERSTATE_PATH, &sbuf) == 0) {
+            if ((fstate = fopen(WIFI_DRIVER_OPERSTATE_PATH, "r")) == NULL) {
+                usleep(500000);
+            } else {
+                break;
+            }
+        } else {
+            usleep(500000);
+        }
+    }
+    if (fstate != NULL) {
+        while (read_count-- >= 0) {
+            fgets(operstate, sizeof(operstate), fstate);
+            if (strncmp(operstate, OPERSTATE_UP, strlen(OPERSTATE_UP)) == 0 ||
+                    strncmp(operstate, OPERSTATE_DOWN, strlen(OPERSTATE_DOWN)) == 0) {
+                ALOGI("Wifi driver is ready");
+                return 1;
+            }
+            ALOGW("Waiting for Wifi driver to get ready. (%d)", read_count);
+            usleep(500000);
+        }
+        fclose(fstate);
+    }
+    return 0;
+}
+#endif
+
 int wifi_load_driver()
 {
     char driver_status[PROPERTY_VALUE_MAX];
@@ -395,6 +434,12 @@ int wifi_load_driver()
     if (wifi_change_driver_state(WIFI_DRIVER_STATE_ON) < 0)
         return -1;
 #endif
+#endif
+#ifdef WIFI_DRIVER_OPERSTATE_PATH
+    if (!is_wifi_driver_ready()) {
+        ALOGE("Wifi driver didn't get ready in time, giving up!");
+        return -1;
+    }
 #endif
 
     if (strcmp(FIRMWARE_LOADER,"") == 0) {
